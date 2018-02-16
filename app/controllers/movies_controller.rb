@@ -13,6 +13,14 @@ class MoviesController < ApplicationController
   def index
     @sort_col = params[:sort_by]
     @movies = Movie.all.order(@sort_col)
+    if params[:ratings]
+      @movies = Movie.where(:rating => params[:ratings].keys).all.order(params[:sort_by])
+    end
+    @all_ratings = Movie.all_ratings
+    @set_ratings = params[:ratings]
+    if !@set_ratings
+      @set_ratings = Hash.new
+    end
   end
 
   def new
